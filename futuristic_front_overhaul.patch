@@ -1,0 +1,118 @@
+*** Begin Patch
+*** Update File: app/src/main/res/values/colors.xml
+@@
+   <color name="navy_blue_alt">#262a3e</color>
+ 
++  <!-- ===== Futuristic Red/Black palette (front-only) ===== -->
++  <!-- Deep black background/surfaces -->
++  <color name="futuristic_primary">#000000</color>
++  <color name="futuristic_surface">#0A0A0A</color>
++  <color name="futuristic_on_primary">#FFFFFFFF</color>
++
++  <!-- Vivid red accent + helpers -->
++  <color name="futuristic_accent">#FF0000</color>
++  <color name="futuristic_accent_variant">#D10000</color>
++  <color name="futuristic_ripple">#33FF0000</color>
++  <color name="futuristic_outline">#22FFFFFF</color>
++
+ </resources>
+*** End Patch
+*** Begin Patch
+*** Update File: app/src/main/res/values/styles.xml
+@@
+     <style name="ChipStyle" parent="Theme.MaterialComponents.DayNight">
+ 
+         <item name="android:layout_width">wrap_content</item>
+         <item name="android:layout_height">wrap_content</item>
+     </style>
++
++    <!-- ===== Futuristic theme (front-only) =====
++         - Forces primary/background to deep black
++         - Accent & controls in vivid red
++         - Subtle red ripple for presses
++         This is additive and does not touch Java code. -->
++    <style name="Futuristic.RedBlack" parent="appCompatBlack">
++        <!-- AppCompat colors -->
++        <item name="colorPrimary">@color/futuristic_primary</item>
++        <item name="colorPrimaryDark">@color/futuristic_primary</item>
++        <item name="colorAccent">@color/futuristic_accent</item>
++
++        <!-- System bars (API 21+) -->
++        <item name="android:statusBarColor">@android:color/black</item>
++        <item name="android:navigationBarColor">@android:color/black</item>
++
++        <!-- Widgets tints -->
++        <item name="colorControlActivated">@color/futuristic_accent</item>
++        <item name="colorControlHighlight">@color/futuristic_ripple</item>
++        <item name="android:textColorPrimary">@color/text_dark</item>
++        <item name="android:textColorSecondary">@color/white_translucent</item>
++    </style>
++
++    <style name="Futuristic.About" parent="aboutBlack">
++        <item name="colorAccent">@color/futuristic_accent</item>
++        <item name="android:statusBarColor">@android:color/black</item>
++        <item name="android:navigationBarColor">@android:color/black</item>
++        <item name="colorControlActivated">@color/futuristic_accent</item>
++        <item name="colorControlHighlight">@color/futuristic_ripple</item>
++    </style>
+*** End Patch
+*** Begin Patch
+*** Update File: app/src/main/AndroidManifest.xml
+@@
+-        <activity
++        <activity
+             android:exported="true"
+             android:label="@string/appbar_name"
+             android:launchMode="singleInstance"
+             android:name=".ui.activities.MainActivity"
+-            android:theme="@style/appCompatBlack"
++            android:theme="@style/Futuristic.RedBlack"
+             android:configChanges="uiMode"
+             android:windowSoftInputMode="adjustPan"
+            >
+@@
+-        <activity
++        <activity
+             android:exported="true"
+             android:uiOptions="splitActionBarWhenNarrow"
+             android:configChanges="orientation|screenSize|uiMode"
+             android:label="@string/setting"
+             android:name=".ui.activities.PreferencesActivity"
+-            android:theme="@style/appCompatBlack">
++            android:theme="@style/Futuristic.RedBlack">
+@@
+-        <activity
++        <activity
+             android:exported="true"
+             android:label="@string/textreader"
+             android:name=".ui.activities.texteditor.TextEditorActivity"
+             android:configChanges="uiMode"
+-            android:theme="@style/appCompatBlack">
++            android:theme="@style/Futuristic.RedBlack">
+@@
+-        <activity
++        <activity
+             android:exported="true"
+             android:label="@string/databasereader"
+             android:name=".ui.activities.DatabaseViewerActivity"
+-            android:theme="@style/appCompatBlack"
++            android:theme="@style/Futuristic.RedBlack"
+             android:configChanges="uiMode"
+             android:screenOrientation="locked">
+@@
+-        <activity android:name=".ui.activities.AboutActivity"
+-            android:theme="@style/aboutBlack"
++        <activity android:name=".ui.activities.AboutActivity"
++            android:theme="@style/Futuristic.About"
+             android:configChanges="uiMode"
+             android:label="About"
+             />
+@@
+-        <activity android:name=".crashreport.ErrorActivity"
+-            android:theme="@style/appCompatBlack"
++        <activity android:name=".crashreport.ErrorActivity"
++            android:theme="@style/Futuristic.RedBlack"
+             android:configChanges="uiMode"
+             android:label="Error"
+             />
+*** End Patch
