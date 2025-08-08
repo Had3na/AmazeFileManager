@@ -1,0 +1,86 @@
+diff --git a/app/src/main/java/com/amaze/filemanager/ui/activities/superclasses/ThemedActivity.java b/app/src/main/java/com/amaze/filemanager/ui/activities/superclasses/ThemedActivity.java
+index cb7f1ec..163d352 100644
+--- a/app/src/main/java/com/amaze/filemanager/ui/activities/superclasses/ThemedActivity.java
++++ b/app/src/main/java/com/amaze/filemanager/ui/activities/superclasses/ThemedActivity.java
+@@ -217,6 +217,13 @@ public class ThemedActivity extends PreferenceActivity {
+       String stringRepresentation = String.format("#%06X", (0xFFFFFF & getAccent()));
+ 
+       switch (stringRepresentation.toUpperCase()) {
++        case "#FF0000":
++          // Custom bright red accent for the futuristic theme.
++          // Apply the matching futuristic accent style based on the base theme (light, dark or black).
++          if (theme.equals(AppTheme.LIGHT)) setTheme(R.style.pref_accent_light_futuristic);
++          else if (theme.equals(AppTheme.BLACK)) setTheme(R.style.pref_accent_black_futuristic);
++          else setTheme(R.style.pref_accent_dark_futuristic);
++          break;
+         case "#F44336":
+           if (theme.equals(AppTheme.LIGHT)) setTheme(R.style.pref_accent_light_red);
+           else if (theme.equals(AppTheme.BLACK)) setTheme(R.style.pref_accent_black_red);
+diff --git a/app/src/main/java/com/amaze/filemanager/ui/colors/ColorPreferenceHelper.java b/app/src/main/java/com/amaze/filemanager/ui/colors/ColorPreferenceHelper.java
+index 85066ee..d9a30e5 100644
+--- a/app/src/main/java/com/amaze/filemanager/ui/colors/ColorPreferenceHelper.java
++++ b/app/src/main/java/com/amaze/filemanager/ui/colors/ColorPreferenceHelper.java
+@@ -36,10 +36,19 @@ import androidx.annotation.ColorRes;
+ 
+ public class ColorPreferenceHelper {
+ 
+-  public static final @ColorRes int DEFAULT_PRIMARY_FIRST_TAB = R.color.primary_indigo,
+-      DEFAULT_PRIMARY_SECOND_TAB = R.color.primary_indigo,
+-      DEFAULT_ACCENT = R.color.primary_pink,
+-      DEFAULT_ICON_SKIN = R.color.primary_pink;
++  /**
++   * Default colour definitions for the file manager theme.
++   *
++   * To create a simple futuristic feel, the primary (tab) colours are set to a very dark shade
++   * and the accent/icon colours are set to a vibrant red. Changing these constants alters the
++   * initial colour scheme used when no user preferences have been saved. If the user
++   * subsequently chooses a different colour scheme via the preferences UI the stored values
++   * will override these defaults.
++   */
++  public static final @ColorRes int DEFAULT_PRIMARY_FIRST_TAB = R.color.futuristic_primary,
++      DEFAULT_PRIMARY_SECOND_TAB = R.color.futuristic_primary,
++      DEFAULT_ACCENT = R.color.futuristic_accent,
++      DEFAULT_ICON_SKIN = R.color.futuristic_accent;
+ 
+   /** Combinations used when randomizing color selection at startup. */
+   private static final @ColorRes int[][] RANDOM_COMBINATIONS =
+diff --git a/app/src/main/res/values/colors.xml b/app/src/main/res/values/colors.xml
+index 0d24681..85608b8 100644
+--- a/app/src/main/res/values/colors.xml
++++ b/app/src/main/res/values/colors.xml
+@@ -130,4 +130,10 @@
+ 
+     <color name="navy_blue_alt">#262a3e</color>
+ 
++    <!-- Futuristic colour palette for custom themes -->
++    <!-- Primary colour for futuristic theme. Using pure black to create a high‑contrast background. -->
++    <color name="futuristic_primary">#000000</color>
++    <!-- Accent colour for futuristic theme. Bright red provides a striking contrast against the dark background. -->
++    <color name="futuristic_accent">#FF0000</color>
++
+ </resources>
+diff --git a/app/src/main/res/values/styles.xml b/app/src/main/res/values/styles.xml
+index e324453..f3c9401 100644
+--- a/app/src/main/res/values/styles.xml
++++ b/app/src/main/res/values/styles.xml
+@@ -318,6 +318,20 @@
+         <item name="colorAccent">@color/accent_super_su</item>
+     </style>
+ 
++    <!-- Futuristic accent styles
++         These styles apply the futuristic accent colour (#FF0000) to the corresponding base themes.
++         They are used when the selected accent colour is set to the custom bright red defined
++         in colors.xml. -->
++    <style name="pref_accent_light_futuristic" parent="appCompatLight">
++        <item name="colorAccent">@color/futuristic_accent</item>
++    </style>
++    <style name="pref_accent_dark_futuristic" parent="appCompatDark">
++        <item name="colorAccent">@color/futuristic_accent</item>
++    </style>
++    <style name="pref_accent_black_futuristic" parent="appCompatBlack">
++        <item name="colorAccent">@color/futuristic_accent</item>
++    </style>
++
+     <style name="ChipStyle" parent="Theme.MaterialComponents.DayNight">
+ 
+         <item name="android:layout_width">wrap_content</item>
